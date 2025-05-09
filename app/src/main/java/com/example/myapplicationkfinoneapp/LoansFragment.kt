@@ -55,6 +55,10 @@ class LoansFragment : Fragment() {
         view.findViewById<MaterialCardView>(R.id.my_agent_card)?.setOnClickListener {
             showMyAgentDialog()
         }
+
+        view.findViewById<MaterialCardView>(R.id.eligibility_card)?.setOnClickListener {
+            showLoanEligibilityDialog()
+        }
     }
 
     private fun showAddPartnerDialog() {
@@ -432,6 +436,42 @@ class LoansFragment : Fragment() {
     private fun showMyAgentDialog() {
         // TODO: Implement My Agent dialog
         Toast.makeText(requireContext(), "My Agent functionality coming soon", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoanEligibilityDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialog_loan_eligibility)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Initialize views
+        val panNumberInput = dialog.findViewById<TextInputEditText>(R.id.panNumberInput)
+        val checkEligibilityButton = dialog.findViewById<MaterialButton>(R.id.checkEligibilityButton)
+
+        // Set up check eligibility button
+        checkEligibilityButton.setOnClickListener {
+            val panNumber = panNumberInput.text.toString().trim()
+            
+            if (panNumber.isEmpty()) {
+                panNumberInput.error = "Please enter PAN number"
+                return@setOnClickListener
+            }
+
+            // PAN number format validation (5 letters + 4 numbers + 1 letter)
+            if (!panNumber.matches(Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}"))) {
+                panNumberInput.error = "Invalid PAN number format"
+                return@setOnClickListener
+            }
+
+            // TODO: Add your API call or further processing here
+            Toast.makeText(requireContext(), "Checking loan eligibility...", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun validateInputs(
