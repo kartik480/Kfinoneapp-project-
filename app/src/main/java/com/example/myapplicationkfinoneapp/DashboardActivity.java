@@ -21,6 +21,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private NavigationView navigationView;
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
+    private LoansFragment loansFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +32,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setupNavigation();
         setupBottomNavigation();
 
-        // Set default fragment
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new LoansFragment())
-                .commit();
-        }
+        // Initialize LoansFragment
+        loansFragment = new LoansFragment();
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, loansFragment)
+            .commit();
     }
 
     private void initializeViews() {
@@ -61,21 +61,25 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private void setupBottomNavigation() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
+            
             if (itemId == R.id.nav_home) {
-                // Handle home navigation
+                // Show database section
+                loansFragment.showSection(loansFragment.getDatabaseSection());
                 return true;
             } else if (itemId == R.id.nav_loans) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new LoansFragment())
-                        .commit();
+                // Show appointment section
+                loansFragment.showSection(loansFragment.getAppointmentSection());
                 return true;
             } else if (itemId == R.id.nav_transactions) {
-                // Handle transactions navigation
+                // Show file section
+                loansFragment.showSection(loansFragment.getFileSection());
                 return true;
             } else if (itemId == R.id.nav_documents) {
-                // Handle documents navigation
+                // Show agents section
+                loansFragment.showSection(loansFragment.getDocumentsSection());
                 return true;
             }
+            
             return false;
         });
     }

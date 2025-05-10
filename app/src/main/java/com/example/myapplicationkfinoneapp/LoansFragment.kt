@@ -1,24 +1,35 @@
 package com.example.myapplicationkfinoneapp
 
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
+import android.widget.Toast
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.textfield.TextInputEditText
-import java.util.Calendar
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
+import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import com.google.android.material.button.MaterialButton
 
 class LoansFragment : Fragment() {
+
+    private lateinit var imageCarousel: ViewPager2
+    private lateinit var dotsIndicator: TabLayout
+    private lateinit var databaseSection: LinearLayout
+    private lateinit var appointmentSection: LinearLayout
+    private lateinit var transactionsSection: LinearLayout
+    private lateinit var documentsSection: LinearLayout
+    private lateinit var fileSection: LinearLayout
+    private lateinit var fileTypeSpinner: Spinner
+    private lateinit var selectedFileText: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,530 +42,211 @@ class LoansFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up click listeners
-        view.findViewById<MaterialCardView>(R.id.add_partner_card)?.setOnClickListener {
-            showAddPartnerDialog()
+        // Set up image carousel
+        imageCarousel = view.findViewById(R.id.imageCarousel)
+        dotsIndicator = view.findViewById(R.id.dotsIndicator)
+
+        // Set up sections
+        databaseSection = view.findViewById(R.id.database_section)
+        appointmentSection = view.findViewById(R.id.appointment_section)
+        fileSection = view.findViewById(R.id.file_section)
+        transactionsSection = view.findViewById(R.id.transactions_section)
+
+        documentsSection = view.findViewById(R.id.documents_section)
+
+
+        // Set up file chooser
+        setupFileChooser(view)
+
+        // Set up the image carousel adapter
+        val carouselAdapter = LoansImageCarouselAdapter(getSampleImages())
+        imageCarousel.adapter = carouselAdapter
+
+        // Now attach the dots indicator
+        TabLayoutMediator(dotsIndicator, imageCarousel) { _, _ -> }.attach()
+
+        // Setup database section click listeners
+        view.findViewById<MaterialCardView>(R.id.add_database_card).setOnClickListener {
+            Toast.makeText(context, "Add Database - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        view.findViewById<MaterialCardView>(R.id.my_partner_card)?.setOnClickListener {
-            showMyPartnerDialog()
+        view.findViewById<MaterialCardView>(R.id.my_sal_data_card).setOnClickListener {
+            Toast.makeText(context, "My SAL Data - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        view.findViewById<MaterialCardView>(R.id.add_connector_card)?.setOnClickListener {
-            showAddConnectorDialog()
+        view.findViewById<MaterialCardView>(R.id.my_senp_data_card).setOnClickListener {
+            Toast.makeText(context, "My SENP Data - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        view.findViewById<MaterialCardView>(R.id.my_connectors_card)?.setOnClickListener {
-            showMyConnectorsDialog()
+        view.findViewById<MaterialCardView>(R.id.my_sep_data_card).setOnClickListener {
+            Toast.makeText(context, "My SEP Data - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        view.findViewById<MaterialCardView>(R.id.add_agent_card)?.setOnClickListener {
-            showAddAgentDialog()
+        view.findViewById<MaterialCardView>(R.id.my_nri_data_card).setOnClickListener {
+            Toast.makeText(context, "My NRI Data - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        view.findViewById<MaterialCardView>(R.id.my_agent_card)?.setOnClickListener {
-            showMyAgentDialog()
+        view.findViewById<MaterialCardView>(R.id.my_educational_data_card).setOnClickListener {
+            Toast.makeText(context, "My Educational Data - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        view.findViewById<MaterialCardView>(R.id.eligibility_card)?.setOnClickListener {
-            showLoanEligibilityDialog()
+        view.findViewById<MaterialCardView>(R.id.team_sal_data_card).setOnClickListener {
+            Toast.makeText(context, "Team SAL Data - Coming Soon", Toast.LENGTH_SHORT).show()
         }
+
+        view.findViewById<MaterialCardView>(R.id.team_senp_data_card).setOnClickListener {
+            Toast.makeText(context, "Team SENP Data - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_sep_data_card).setOnClickListener {
+            Toast.makeText(context, "Team SEP Data - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_nri_data_card).setOnClickListener {
+            Toast.makeText(context, "Team NRI Data - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_educational_data_card).setOnClickListener {
+            Toast.makeText(context, "Team Educational Data - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        // Setup appointment section click listeners
+        view.findViewById<MaterialCardView>(R.id.add_appointment_card).setOnClickListener {
+            Toast.makeText(context, "Add Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.my_sal_appt_card).setOnClickListener {
+            Toast.makeText(context, "My SAL Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.my_senp_appt_card).setOnClickListener {
+            Toast.makeText(context, "My SENP Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.my_sep_appt_card).setOnClickListener {
+            Toast.makeText(context, "My SEP Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.my_nri_appt_card).setOnClickListener {
+            Toast.makeText(context, "My NRI Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.my_educational_appt_card).setOnClickListener {
+            Toast.makeText(context, "My Educational Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_sal_appt_card).setOnClickListener {
+            Toast.makeText(context, "Team SAL Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_senp_appt_card).setOnClickListener {
+            Toast.makeText(context, "Team SENP Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_sep_appt_card).setOnClickListener {
+            Toast.makeText(context, "Team SEP Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_nri_appt_card).setOnClickListener {
+            Toast.makeText(context, "Team NRI Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.team_educational_appt_card).setOnClickListener {
+            Toast.makeText(context, "Team Educational Appointment - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        // Setup transactions section click listeners
+        view.findViewById<MaterialCardView>(R.id.view_transactions_card).setOnClickListener {
+            Toast.makeText(context, "View Transactions - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        // Setup file section click listeners
+        view.findViewById<MaterialCardView>(R.id.file_chooser_card).setOnClickListener {
+            showSection(fileSection)
+        }
+
+        // Show database section by default
+        showSection(databaseSection)
     }
 
-    private fun showAddPartnerDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_add_partner)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
+    private fun setupFileChooser(view: View) {
         // Initialize views
-        val partnerImageCard = dialog.findViewById<MaterialCardView>(R.id.partnerImageCard)
-        val partnerImage = dialog.findViewById<ImageView>(R.id.partnerImage)
-        val fullNameInput = dialog.findViewById<TextInputEditText>(R.id.fullNameInput)
-        val aliasNameInput = dialog.findViewById<TextInputEditText>(R.id.aliasNameInput)
-        val phoneInput = dialog.findViewById<TextInputEditText>(R.id.phoneInput)
-        val emailInput = dialog.findViewById<TextInputEditText>(R.id.emailInput)
-        val dobInput = dialog.findViewById<TextInputEditText>(R.id.dobInput)
-        val aadharInput = dialog.findViewById<TextInputEditText>(R.id.aadharInput)
-        val panInput = dialog.findViewById<TextInputEditText>(R.id.panInput)
-        val partnerTypeInput = dialog.findViewById<AutoCompleteTextView>(R.id.partnerTypeInput)
-        val branchStateInput = dialog.findViewById<AutoCompleteTextView>(R.id.branchStateInput)
-        val branchLocationInput = dialog.findViewById<TextInputEditText>(R.id.branchLocationInput)
-        val addressInput = dialog.findViewById<TextInputEditText>(R.id.addressInput)
-        val passwordInput = dialog.findViewById<TextInputEditText>(R.id.passwordInput)
-        val submitButton = dialog.findViewById<MaterialButton>(R.id.submitButton)
+        fileTypeSpinner = view.findViewById(R.id.file_type_spinner)
+        selectedFileText = view.findViewById(R.id.selected_file_text)
+        val chooseFileButton = view.findViewById<MaterialButton>(R.id.choose_file_button)
 
-        // Set up partner type dropdown
-        val partnerTypes = arrayOf("Individual", "Business", "Corporate")
-        val partnerTypeAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, partnerTypes)
-        partnerTypeInput.setAdapter(partnerTypeAdapter)
+        // Set up file type spinner
+        val fileTypes = arrayOf("All Files", "PDF", "PNG", "JPEG", "DOC", "DOCX", "XLS", "XLSX", "TXT")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, fileTypes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        fileTypeSpinner.adapter = adapter
 
-        // Set up branch state dropdown
-        val states = arrayOf("Andhra Pradesh", "Karnataka", "Tamil Nadu", "Kerala", "Telangana")
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, states)
-        branchStateInput.setAdapter(stateAdapter)
-
-        // Set up date picker for DOB
-        dobInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            DatePickerDialog(
-                requireContext(),
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    val date = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
-                    dobInput.setText(date)
-                },
-                year,
-                month,
-                day
-            ).show()
+        // Set up file chooser button click listener
+        chooseFileButton.setOnClickListener {
+            // TODO: Implement file chooser
+            Toast.makeText(context, "File chooser - Coming Soon", Toast.LENGTH_SHORT).show()
         }
 
-        // Set up image selection
-        partnerImageCard.setOnClickListener {
-            // Implement image selection logic here
-            // You'll need to add image picker functionality
-        }
+        // Set up spinner selection listener
+        fileTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedType = fileTypes[position]
+                Toast.makeText(context, "Selected file type: $selectedType", Toast.LENGTH_SHORT).show()
+            }
 
-        // Set up submit button
-        submitButton.setOnClickListener {
-            // Validate inputs
-            if (validateInputs(
-                    fullNameInput,
-                    phoneInput,
-                    emailInput,
-                    dobInput,
-                    aadharInput,
-                    panInput,
-                    partnerTypeInput,
-                    branchStateInput,
-                    branchLocationInput,
-                    addressInput,
-                    passwordInput
-                )
-            ) {
-                // TODO: Implement partner creation logic
-                dialog.dismiss()
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
             }
         }
-
-        dialog.show()
     }
 
-    private fun showMyPartnerDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_my_partner)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+    fun showSection(section: LinearLayout) {
+        // Hide all sections
+        databaseSection.visibility = View.GONE
+        appointmentSection.visibility = View.GONE
+        transactionsSection.visibility = View.GONE
+        documentsSection.visibility = View.GONE
+        fileSection.visibility = View.GONE
+
+        // Show the selected section
+        section.visibility = View.VISIBLE
+    }
+
+    // Getter methods for sections
+    fun getDatabaseSection(): LinearLayout = databaseSection
+    fun getAppointmentSection(): LinearLayout = appointmentSection
+    fun getTransactionsSection(): LinearLayout = transactionsSection
+    fun getDocumentsSection(): LinearLayout = documentsSection
+    fun getFileSection(): LinearLayout = fileSection
+
+    private fun getSampleImages(): List<Int> {
+        return listOf(
+            R.drawable.ic_loan,
+            R.drawable.ic_business,
+            R.drawable.ic_bike
         )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+}
 
-        // Initialize views
-        val partnerTypeFilter = dialog.findViewById<AutoCompleteTextView>(R.id.partnerTypeFilter)
-        val branchStateFilter = dialog.findViewById<AutoCompleteTextView>(R.id.branchStateFilter)
-        val branchLocationFilter = dialog.findViewById<AutoCompleteTextView>(R.id.branchLocationFilter)
-        val filterButton = dialog.findViewById<MaterialButton>(R.id.filterButton)
-        val resetButton = dialog.findViewById<MaterialButton>(R.id.resetButton)
-        val noPartnersFound = dialog.findViewById<TextView>(R.id.noPartnersFound)
-        val partnerList = dialog.findViewById<RecyclerView>(R.id.partnerList)
+class LoansImageCarouselAdapter(private val images: List<Int>) : 
+    RecyclerView.Adapter<LoansImageCarouselAdapter.LoansImageViewHolder>() {
 
-        // Set up partner type dropdown
-        val partnerTypes = arrayOf("Individual", "Business", "Corporate")
-        val partnerTypeAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, partnerTypes)
-        partnerTypeFilter.setAdapter(partnerTypeAdapter)
-
-        // Set up branch state dropdown
-        val states = arrayOf("Andhra Pradesh", "Karnataka", "Tamil Nadu", "Kerala", "Telangana")
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, states)
-        branchStateFilter.setAdapter(stateAdapter)
-
-        // Set up branch location dropdown (this would typically be populated based on selected state)
-        val locations = arrayOf("Location 1", "Location 2", "Location 3", "Location 4", "Location 5")
-        val locationAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, locations)
-        branchLocationFilter.setAdapter(locationAdapter)
-
-        // Set up filter button
-        filterButton.setOnClickListener {
-            // TODO: Implement filter logic
-            // For now, just show the "No Partners Found" message
-            noPartnersFound.visibility = View.VISIBLE
-            partnerList.visibility = View.GONE
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoansImageViewHolder {
+        val imageView = ImageView(parent.context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            scaleType = ImageView.ScaleType.CENTER_CROP
         }
-
-        // Set up reset button
-        resetButton.setOnClickListener {
-            partnerTypeFilter.text.clear()
-            branchStateFilter.text.clear()
-            branchLocationFilter.text.clear()
-            noPartnersFound.visibility = View.VISIBLE
-            partnerList.visibility = View.GONE
-        }
-
-        dialog.show()
+        return LoansImageViewHolder(imageView)
     }
 
-    private fun showAddConnectorDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_add_connector)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        // Initialize views
-        val phoneNumberInput = dialog.findViewById<TextInputEditText>(R.id.phoneNumberInput)
-        val fullNameInput = dialog.findViewById<TextInputEditText>(R.id.fullNameInput)
-        val emailInput = dialog.findViewById<TextInputEditText>(R.id.emailInput)
-        val branchStateInput = dialog.findViewById<AutoCompleteTextView>(R.id.branchStateInput)
-        val altPhoneNumberInput = dialog.findViewById<TextInputEditText>(R.id.altPhoneNumberInput)
-        val connectorTypeInput = dialog.findViewById<AutoCompleteTextView>(R.id.connectorTypeInput)
-        val branchLocationInput = dialog.findViewById<AutoCompleteTextView>(R.id.branchLocationInput)
-        val submitButton = dialog.findViewById<MaterialButton>(R.id.submitButton)
-
-        // Set up dropdowns
-        val states = arrayOf("Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Gujarat")
-        val connectorTypes = arrayOf("SAL", "SENP", "SEP", "NRI", "Education")
-        val locations = arrayOf("Mumbai", "Bangalore", "Chennai", "New Delhi", "Ahmedabad")
-
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, states)
-        val connectorTypeAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, connectorTypes)
-        val locationAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, locations)
-
-        branchStateInput.setAdapter(stateAdapter)
-        connectorTypeInput.setAdapter(connectorTypeAdapter)
-        branchLocationInput.setAdapter(locationAdapter)
-
-        // Set up submit button
-        submitButton.setOnClickListener {
-            // Validate inputs
-            if (phoneNumberInput.text.toString().length != 10) {
-                phoneNumberInput.error = "Please enter a valid 10-digit phone number"
-                return@setOnClickListener
-            }
-
-            if (fullNameInput.text.toString().isEmpty()) {
-                fullNameInput.error = "Please enter full name"
-                return@setOnClickListener
-            }
-
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput.text.toString()).matches()) {
-                emailInput.error = "Please enter a valid email address"
-                return@setOnClickListener
-            }
-
-            if (branchStateInput.text.toString().isEmpty()) {
-                branchStateInput.error = "Please select branch state"
-                return@setOnClickListener
-            }
-
-            if (altPhoneNumberInput.text.toString().isNotEmpty() && altPhoneNumberInput.text.toString().length != 10) {
-                altPhoneNumberInput.error = "Please enter a valid 10-digit phone number"
-                return@setOnClickListener
-            }
-
-            if (connectorTypeInput.text.toString().isEmpty()) {
-                connectorTypeInput.error = "Please select connector type"
-                return@setOnClickListener
-            }
-
-            if (branchLocationInput.text.toString().isEmpty()) {
-                branchLocationInput.error = "Please select branch location"
-                return@setOnClickListener
-            }
-
-            // TODO: Handle form submission
-            Toast.makeText(requireContext(), "Connector added successfully", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
-        dialog.show()
+    override fun onBindViewHolder(holder: LoansImageViewHolder, position: Int) {
+        holder.imageView.setImageResource(images[position])
     }
 
-    private fun showMyConnectorsDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_my_connectors)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    override fun getItemCount(): Int = images.size
 
-        // Initialize views
-        val connectorTypeFilter = dialog.findViewById<AutoCompleteTextView>(R.id.connectorTypeFilter)
-        val branchStateFilter = dialog.findViewById<AutoCompleteTextView>(R.id.branchStateFilter)
-        val branchLocationFilter = dialog.findViewById<AutoCompleteTextView>(R.id.branchLocationFilter)
-        val filterButton = dialog.findViewById<MaterialButton>(R.id.filterButton)
-        val resetButton = dialog.findViewById<MaterialButton>(R.id.resetButton)
-        val noConnectionsFound = dialog.findViewById<TextView>(R.id.noConnectionsFound)
-        val connectorList = dialog.findViewById<RecyclerView>(R.id.connectorList)
-
-        // Set up connector type dropdown
-        val connectorTypes = arrayOf("SAL", "SENP", "SEP", "NRI", "Education")
-        val connectorTypeAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, connectorTypes)
-        connectorTypeFilter.setAdapter(connectorTypeAdapter)
-
-        // Set up branch state dropdown
-        val states = arrayOf("Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Gujarat")
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, states)
-        branchStateFilter.setAdapter(stateAdapter)
-
-        // Set up branch location dropdown
-        val locations = arrayOf("Mumbai", "Bangalore", "Chennai", "New Delhi", "Ahmedabad")
-        val locationAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, locations)
-        branchLocationFilter.setAdapter(locationAdapter)
-
-        // Set up filter button
-        filterButton.setOnClickListener {
-            // TODO: Implement filter logic
-            // For now, just show the "No Connections Found" message
-            noConnectionsFound.visibility = View.VISIBLE
-            connectorList.visibility = View.GONE
-        }
-
-        // Set up reset button
-        resetButton.setOnClickListener {
-            connectorTypeFilter.text.clear()
-            branchStateFilter.text.clear()
-            branchLocationFilter.text.clear()
-            noConnectionsFound.visibility = View.VISIBLE
-            connectorList.visibility = View.GONE
-        }
-
-        dialog.show()
-    }
-
-    private fun showAddAgentDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_add_agent)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        // Initialize views
-        val phoneNumberInput = dialog.findViewById<TextInputEditText>(R.id.phoneNumberInput)
-        val fullNameInput = dialog.findViewById<TextInputEditText>(R.id.fullNameInput)
-        val companyNameInput = dialog.findViewById<TextInputEditText>(R.id.companyNameInput)
-        val emailInput = dialog.findViewById<TextInputEditText>(R.id.emailInput)
-        val branchStateInput = dialog.findViewById<AutoCompleteTextView>(R.id.branchStateInput)
-        val addressInput = dialog.findViewById<AutoCompleteTextView>(R.id.addressInput)
-        val altPhoneNumberInput = dialog.findViewById<TextInputEditText>(R.id.altPhoneNumberInput)
-        val partnerTypeInput = dialog.findViewById<AutoCompleteTextView>(R.id.partnerTypeInput)
-        val branchLocationInput = dialog.findViewById<AutoCompleteTextView>(R.id.branchLocationInput)
-        val visitingCardInput = dialog.findViewById<AutoCompleteTextView>(R.id.visitingCardInput)
-        val submitButton = dialog.findViewById<MaterialButton>(R.id.submitButton)
-
-        // Set up dropdowns
-        val states = arrayOf("Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Gujarat")
-        val partnerTypes = arrayOf("Individual", "Business", "Corporate")
-        val locations = arrayOf("Mumbai", "Bangalore", "Chennai", "New Delhi", "Ahmedabad")
-        val addresses = arrayOf("Address 1", "Address 2", "Address 3", "Address 4", "Address 5")
-        val visitingCards = arrayOf("Card 1", "Card 2", "Card 3", "Card 4", "Card 5")
-
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, states)
-        val partnerTypeAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, partnerTypes)
-        val locationAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, locations)
-        val addressAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, addresses)
-        val visitingCardAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, visitingCards)
-
-        branchStateInput.setAdapter(stateAdapter)
-        partnerTypeInput.setAdapter(partnerTypeAdapter)
-        branchLocationInput.setAdapter(locationAdapter)
-        addressInput.setAdapter(addressAdapter)
-        visitingCardInput.setAdapter(visitingCardAdapter)
-
-        // Set up submit button
-        submitButton.setOnClickListener {
-            // Validate inputs
-            if (phoneNumberInput.text.toString().length != 10) {
-                phoneNumberInput.error = "Please enter a valid 10-digit phone number"
-                return@setOnClickListener
-            }
-
-            if (fullNameInput.text.toString().isEmpty()) {
-                fullNameInput.error = "Please enter full name"
-                return@setOnClickListener
-            }
-
-            if (companyNameInput.text.toString().isEmpty()) {
-                companyNameInput.error = "Please enter company name"
-                return@setOnClickListener
-            }
-
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput.text.toString()).matches()) {
-                emailInput.error = "Please enter a valid email address"
-                return@setOnClickListener
-            }
-
-            if (branchStateInput.text.toString().isEmpty()) {
-                branchStateInput.error = "Please select branch state"
-                return@setOnClickListener
-            }
-
-            if (addressInput.text.toString().isEmpty()) {
-                addressInput.error = "Please select address"
-                return@setOnClickListener
-            }
-
-            if (altPhoneNumberInput.text.toString().isNotEmpty() && altPhoneNumberInput.text.toString().length != 10) {
-                altPhoneNumberInput.error = "Please enter a valid 10-digit phone number"
-                return@setOnClickListener
-            }
-
-            if (partnerTypeInput.text.toString().isEmpty()) {
-                partnerTypeInput.error = "Please select type of partner"
-                return@setOnClickListener
-            }
-
-            if (branchLocationInput.text.toString().isEmpty()) {
-                branchLocationInput.error = "Please select branch location"
-                return@setOnClickListener
-            }
-
-            if (visitingCardInput.text.toString().isEmpty()) {
-                visitingCardInput.error = "Please select visiting card"
-                return@setOnClickListener
-            }
-
-            // TODO: Handle form submission
-            Toast.makeText(requireContext(), "Agent added successfully", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
-        dialog.show()
-    }
-
-    private fun showMyAgentDialog() {
-        // TODO: Implement My Agent dialog
-        Toast.makeText(requireContext(), "My Agent functionality coming soon", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showLoanEligibilityDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_loan_eligibility)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        // Initialize views
-        val panNumberInput = dialog.findViewById<TextInputEditText>(R.id.panNumberInput)
-        val checkEligibilityButton = dialog.findViewById<MaterialButton>(R.id.checkEligibilityButton)
-
-        // Set up check eligibility button
-        checkEligibilityButton.setOnClickListener {
-            val panNumber = panNumberInput.text.toString().trim()
-            
-            if (panNumber.isEmpty()) {
-                panNumberInput.error = "Please enter PAN number"
-                return@setOnClickListener
-            }
-
-            // PAN number format validation (5 letters + 4 numbers + 1 letter)
-            if (!panNumber.matches(Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}"))) {
-                panNumberInput.error = "Invalid PAN number format"
-                return@setOnClickListener
-            }
-
-            // TODO: Add your API call or further processing here
-            Toast.makeText(requireContext(), "Checking loan eligibility...", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
-        dialog.show()
-    }
-
-    private fun validateInputs(
-        fullName: TextInputEditText,
-        phone: TextInputEditText,
-        email: TextInputEditText,
-        dob: TextInputEditText,
-        aadhar: TextInputEditText,
-        pan: TextInputEditText,
-        partnerType: AutoCompleteTextView,
-        branchState: AutoCompleteTextView,
-        branchLocation: TextInputEditText,
-        address: TextInputEditText,
-        password: TextInputEditText
-    ): Boolean {
-        var isValid = true
-
-        // Validate full name
-        if (fullName.text.isNullOrEmpty()) {
-            fullName.error = "Full name is required"
-            isValid = false
-        }
-
-        // Validate phone
-        if (phone.text.isNullOrEmpty() || phone.text?.length != 10) {
-            phone.error = "Valid 10-digit phone number is required"
-            isValid = false
-        }
-
-        // Validate email
-        if (email.text.isNullOrEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches()) {
-            email.error = "Valid email is required"
-            isValid = false
-        }
-
-        // Validate DOB
-        if (dob.text.isNullOrEmpty()) {
-            dob.error = "Date of birth is required"
-            isValid = false
-        }
-
-        // Validate Aadhar
-        if (aadhar.text.isNullOrEmpty() || aadhar.text?.length != 12) {
-            aadhar.error = "Valid 12-digit Aadhar number is required"
-            isValid = false
-        }
-
-        // Validate PAN
-        if (pan.text.isNullOrEmpty() || pan.text?.length != 10) {
-            pan.error = "Valid 10-character PAN is required"
-            isValid = false
-        }
-
-        // Validate partner type
-        if (partnerType.text.isNullOrEmpty()) {
-            partnerType.error = "Partner type is required"
-            isValid = false
-        }
-
-        // Validate branch state
-        if (branchState.text.isNullOrEmpty()) {
-            branchState.error = "Branch state is required"
-            isValid = false
-        }
-
-        // Validate branch location
-        if (branchLocation.text.isNullOrEmpty()) {
-            branchLocation.error = "Branch location is required"
-            isValid = false
-        }
-
-        // Validate address
-        if (address.text.isNullOrEmpty()) {
-            address.error = "Address is required"
-            isValid = false
-        }
-
-        // Validate password
-        if (password.text.isNullOrEmpty() || password.text?.length!! < 6) {
-            password.error = "Password must be at least 6 characters"
-            isValid = false
-        }
-
-        return isValid
-    }
+    class LoansImageViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView)
 } 
