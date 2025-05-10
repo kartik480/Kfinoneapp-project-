@@ -62,11 +62,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             
-            if (itemId == R.id.nav_home) {
-                // Show database section
-                loansFragment.showSection(loansFragment.getDatabaseSection());
-                return true;
-            } else if (itemId == R.id.nav_loans) {
+            if (itemId == R.id.nav_loans) {
                 // Show appointment section
                 loansFragment.showSection(loansFragment.getAppointmentSection());
                 return true;
@@ -77,6 +73,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             } else if (itemId == R.id.nav_documents) {
                 // Show agents section
                 loansFragment.showSection(loansFragment.getDocumentsSection());
+                return true;
+            } else if (itemId == R.id.nav_more) {
+                // Show more section
+                loansFragment.showSection(loansFragment.getMoreSection());
                 return true;
             }
             

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="Database" />
-    <item
         android:id="@+id/nav_loans"
         android:icon="@drawable/ic_loan"
         android:title="Appointment" />
@@ -16,4 +12,8 @@
         android:id="@+id/nav_documents"
         android:icon="@drawable/ic_document"
         android:title="Agents" />
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@drawable/ic_more"
+        android:title="More" />
 </menu> 
