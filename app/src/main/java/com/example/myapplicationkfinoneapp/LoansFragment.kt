@@ -165,6 +165,15 @@ class LoansFragment : Fragment() {
             showSection(fileSection)
         }
 
+        // Setup agent section click listeners
+        view.findViewById<MaterialCardView>(R.id.add_agent_card).setOnClickListener {
+            Toast.makeText(context, "Add Agent - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+        view.findViewById<MaterialCardView>(R.id.my_agent_card).setOnClickListener {
+            Toast.makeText(context, "My Agent - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
         // Show database section by default
         showSection(databaseSection)
     }
