@@ -18,6 +18,8 @@ import android.widget.TextView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.google.android.material.button.MaterialButton
+import android.app.Dialog
+import android.widget.AutoCompleteTextView
 
 class LoansFragment : Fragment() {
 
@@ -167,7 +169,7 @@ class LoansFragment : Fragment() {
 
         // Setup agent section click listeners
         view.findViewById<MaterialCardView>(R.id.add_agent_card).setOnClickListener {
-            Toast.makeText(context, "Add Agent - Coming Soon", Toast.LENGTH_SHORT).show()
+            showAddAgentDialog()
         }
 
         view.findViewById<MaterialCardView>(R.id.my_agent_card).setOnClickListener {
@@ -176,6 +178,54 @@ class LoansFragment : Fragment() {
 
         // Show database section by default
         showSection(databaseSection)
+    }
+
+    private fun showAddAgentDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialog_add_agent)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        // Initialize dropdowns
+        setupDropdowns(dialog)
+
+        // Setup visiting card upload
+        setupVisitingCardUpload(dialog)
+
+        // Setup submit button
+        dialog.findViewById<MaterialButton>(R.id.submitButton).setOnClickListener {
+            // TODO: Handle form submission
+            Toast.makeText(context, "Agent details submitted successfully!", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun setupDropdowns(dialog: Dialog) {
+        // Branch State dropdown
+        val branchStates = arrayOf("Andhra Pradesh", "Karnataka", "Kerala", "Tamil Nadu", "Telangana")
+        val branchStateAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, branchStates)
+        dialog.findViewById<AutoCompleteTextView>(R.id.branchStateDropdown).setAdapter(branchStateAdapter)
+
+        // Type of Partner dropdown
+        val partnerTypes = arrayOf("Individual", "Company", "Partnership", "LLP")
+        val partnerTypeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, partnerTypes)
+        dialog.findViewById<AutoCompleteTextView>(R.id.partnerTypeDropdown).setAdapter(partnerTypeAdapter)
+
+        // Branch Location dropdown
+        val branchLocations = arrayOf("Chennai", "Bangalore", "Hyderabad", "Kochi", "Vijayawada")
+        val branchLocationAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, branchLocations)
+        dialog.findViewById<AutoCompleteTextView>(R.id.branchLocationDropdown).setAdapter(branchLocationAdapter)
+    }
+
+    private fun setupVisitingCardUpload(dialog: Dialog) {
+        dialog.findViewById<MaterialCardView>(R.id.visitingCardUploadCard).setOnClickListener {
+            // TODO: Implement file picker
+            Toast.makeText(context, "File picker - Coming Soon", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupFileChooser(view: View) {
